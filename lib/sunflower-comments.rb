@@ -23,7 +23,7 @@ if defined?(Merb::Plugins)
     # Slice metadata
     self.description = "SunflowerComments is a chunky Merb slice!"
     self.version = "0.0.1"
-    self.author = "Engine Yard"
+    self.author = "Laurynas Liutkus"
     
     # Stub classes loaded hook - runs before LoadClasses BootLoader
     # right after a slice's classes have been loaded internally.
@@ -53,11 +53,52 @@ if defined?(Merb::Plugins)
     #   to avoid potential conflicts with global named routes.
     def self.setup_router(scope)
       # example of a named route
-      scope.match('/index(.:format)').to(:controller => 'main', :action => 'index').name(:index)
+      # scope.match('/index(.:format)').to(:controller => 'main', :action => 'index').name(:index)
       # the slice is mounted at /sunflower-comments - note that it comes before default_routes
-      scope.match('/').to(:controller => 'main', :action => 'index').name(:home)
+      # scope.match('/').to(:controller => 'main', :action => 'index').name(:home)
       # enable slice-level default routes by default
-      scope.default_routes
+      # scope.default_routes
+      
+      SunflowerComments.classes.each do |klass|
+        parent_table = klass.table_name.to_s
+        prefix = "/#{parent_table}/:parent_id"
+        singular = klass.name.underscore
+        hash = {:controller => 'comments', :parent_table => parent_table}
+
+        scope.match(prefix+"/comments", :method => :get).to(hash.merge(:action => 'index')).name(:"#{singular}_comments")
+        scope.match(prefix+"/comments", :method => :post).to(hash.merge(:action => 'create')).name(:"#{singular}_comments")
+        scope.match(prefix+"/comments/new", :method => :get).to(hash.merge(:action => 'new')).name(:"new_#{singular}_comment")
+        scope.match(prefix+"/comments/:id", :method => :get).to(hash.merge(:action => 'show')).name(:"#{singular}_comment")
+        scope.match(prefix+"/comments/:id", :method => :put).to(hash.merge(:action => 'update')).name(:"#{singular}_comment")
+        scope.match(prefix+"/comments/:id", :method => :delete).to(hash.merge(:action => 'destroy')).name(:"#{singular}_comment")
+
+        scope.match(prefix+"/comments/:id/report", :method => :get).to(hash.merge(:action => 'report')).name(:"report_#{singular}_comment")
+      end
+    end
+
+    def self.classes
+      @@classes ||= []
+    end
+    def self.classes_hash
+      @@classes_hash ||= {}
+    end
+
+    module Commentable
+      def self.included(other)
+        SunflowerComments.classes << other
+        SunflowerComments.classes_hash[other.table_name.to_s] = other
+        other.has_many :comments, :key => :parent_id, :conditions => {:parent_table => other.table_name.to_s}
+      end
+    end
+
+    module Comment
+      def self.included(other)
+        other.validates_presence_of :body, :parent_id, :parent_table
+      end
+
+      def parent
+        parent_table.camelcase.singular.constantize.filter(:id => parent_id).first
+      end
     end
     
   end

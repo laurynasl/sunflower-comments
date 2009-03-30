@@ -1,5 +1,39 @@
 namespace :slices do
   namespace :sunflower_comments do
+
+    desc 'Loads triggers (only for Sequel adapter and PostgreSQL dabase)'
+    task :load_triggers => :merb_env do
+      def try_drop_trigger(table, trigger)
+        if Sequel::Model.db.select('count(*)'.lit => 'count').from(:pg_trigger).filter(:tgname => trigger).first[:count] == 1
+          Sequel::Model.db.execute "DROP TRIGGER \"#{trigger}\" ON \"#{table}\""
+        end
+      end
+
+      # "create" language
+      if Sequel::Model.db.select('count(*)'.lit => 'count').from(:pg_language).filter(:lanname => 'plpgsql').first[:count] == 0
+        Sequel::Model.db.execute "CREATE LANGUAGE plpgsql"
+      end
+
+      # comments INSERT/UPDATE trigger
+      try_drop_trigger 'comments', 'comments_insert_trigger'
+      Sequel::Model.db.execute File.read(SunflowerComments.root_path / 'lib' / 'sunflower-comments' / 'sql' / 'trigger.sql')
+
+
+      # parent(s) DELETE triggers
+      dynamic =  File.read(SunflowerComments.root_path / 'lib' / 'sunflower-comments' / 'sql' / 'dynamic.sql')
+
+      SunflowerComments.classes.each do |klass|
+        table_name = klass.table_name.to_s
+        puts
+        puts "-- Dynamically loading triggers for #{klass} (table \"#{table_name}\")"
+        
+        trigger_name = "#{table_name}_delete_bc_trigger"
+        try_drop_trigger table_name, trigger_name
+
+        script = dynamic.gsub('#{table}', table_name)
+        Sequel::Model.db.execute script
+      end
+    end
   
     desc "Install SunflowerComments"
     task :install => [:preflight, :setup_directories, :copy_assets, :migrate]

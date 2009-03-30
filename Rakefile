@@ -53,3 +53,13 @@ require 'spec/rake/spectask'
 require 'merb-core/test/tasks/spectasks'
 desc 'Default: run spec examples'
 task :default => 'spec'
+
+desc 'Forces gem rebuild and reinstalls without dependencies nor documentation'
+task :debug_reinstall => [:repackage] do
+  s = "sudo gem uninstall #{GEM_NAME}"
+  puts s
+  system s
+  s = "sudo gem install pkg/#{GEM_NAME}-#{GEM_VERSION}.gem --no-ri --no-rdoc --ignore-dependencies"
+  puts s
+  system s
+end
