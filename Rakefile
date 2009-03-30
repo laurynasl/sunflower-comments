@@ -9,7 +9,7 @@ AUTHOR = "Laurynas Liutkus"
 EMAIL = "laurynasl@gmail.com"
 HOMEPAGE = "http://github.com/laurynasl/sunflower-comments/"
 SUMMARY = "Merb Slice that provides sequel + postgres + comments = comment anything (polymorphic, with database triggers)"
-GEM_VERSION = "0.0.1"
+GEM_VERSION = "0.0.2"
 
 spec = Gem::Specification.new do |s|
   s.rubyforge_project = 'merb'

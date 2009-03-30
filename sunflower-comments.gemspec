@@ -2,15 +2,15 @@
 
 Gem::Specification.new do |s|
   s.name = %q{sunflower-comments}
-  s.version = "0.0.1"
+  s.version = "0.0.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Laurynas Liutkus"]
-  s.date = %q{2009-03-28}
+  s.date = %q{2009-03-30}
   s.description = %q{Merb Slice that provides sequel + postgres + comments = comment anything (polymorphic, with database triggers)}
   s.email = %q{laurynasl@gmail.com}
   s.extra_rdoc_files = ["README", "LICENSE", "TODO"]
-  s.files = ["LICENSE", "README", "Rakefile", "TODO", "lib/sunflower-comments.rb", "lib/sunflower-comments", "lib/sunflower-comments/slicetasks.rb", "lib/sunflower-comments/merbtasks.rb", "lib/sunflower-comments/spectasks.rb", "spec/sunflower-comments_spec.rb", "spec/spec_helper.rb", "spec/controllers", "spec/controllers/main_spec.rb", "app/views", "app/views/main", "app/views/main/index.html.erb", "app/views/layout", "app/views/layout/sunflower_comments.html.erb", "app/controllers", "app/controllers/main.rb", "app/controllers/application.rb", "app/helpers", "app/helpers/application_helper.rb", "public/stylesheets", "public/stylesheets/master.css", "public/javascripts", "public/javascripts/master.js", "stubs/app", "stubs/app/controllers", "stubs/app/controllers/main.rb", "stubs/app/controllers/application.rb"]
+  s.files = ["LICENSE", "README", "Rakefile", "TODO", "lib/sunflower-comments.rb", "lib/sunflower-comments", "lib/sunflower-comments/sql", "lib/sunflower-comments/sql/trigger.sql", "lib/sunflower-comments/sql/dynamic.sql", "lib/sunflower-comments/slicetasks.rb", "lib/sunflower-comments/merbtasks.rb", "lib/sunflower-comments/spectasks.rb", "spec/sunflower-comments_spec.rb", "spec/spec_helper.rb", "spec/controllers", "spec/controllers/main_spec.rb", "app/views", "app/views/comments", "app/views/comments/new.html.erb", "app/views/layout", "app/views/layout/sunflower_comments.html.erb", "app/controllers", "app/controllers/comments.rb", "app/controllers/application.rb", "app/helpers", "app/helpers/application_helper.rb", "public/stylesheets", "public/stylesheets/master.css", "public/javascripts", "public/javascripts/master.js", "stubs/app", "stubs/app/controllers", "stubs/app/controllers/main.rb", "stubs/app/controllers/application.rb"]
   s.has_rdoc = true
   s.homepage = %q{http://github.com/laurynasl/sunflower-comments/}
   s.require_paths = ["lib"]
