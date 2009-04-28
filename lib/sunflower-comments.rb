@@ -87,7 +87,7 @@ if defined?(Merb::Plugins)
       def self.included(other)
         SunflowerComments.classes << other
         SunflowerComments.classes_hash[other.table_name.to_s] = other
-        other.many_to_one :comments, :key => :parent_id, :conditions => {:parent_table => other.table_name.to_s}
+        other.one_to_many :comments, :key => :parent_id, :conditions => {:parent_table => other.table_name.to_s}
       end
     end
 
