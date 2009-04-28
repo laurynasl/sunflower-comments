@@ -2,7 +2,7 @@ if defined?(Merb::Plugins)
 
   $:.unshift File.dirname(__FILE__)
 
-  load_dependency 'merb-slices'
+  load_dependency 'merb-slices', '>=1.0.0'
   Merb::Plugins.add_rakefiles "sunflower-comments/merbtasks", "sunflower-comments/slicetasks", "sunflower-comments/spectasks"
 
   # Register the Slice for the current host application
@@ -87,7 +87,7 @@ if defined?(Merb::Plugins)
       def self.included(other)
         SunflowerComments.classes << other
         SunflowerComments.classes_hash[other.table_name.to_s] = other
-        other.has_many :comments, :key => :parent_id, :conditions => {:parent_table => other.table_name.to_s}
+        other.many_to_one :comments, :key => :parent_id, :conditions => {:parent_table => other.table_name.to_s}
       end
     end
 
