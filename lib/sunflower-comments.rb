@@ -73,6 +73,7 @@ if defined?(Merb::Plugins)
         scope.match(prefix+"/comments/:id", :method => :delete).to(hash.merge(:action => 'destroy')).name(:"#{singular}_comment")
 
         scope.match(prefix+"/comments/:id/report", :method => :get).to(hash.merge(:action => 'report')).name(:"report_#{singular}_comment")
+        scope.match(prefix+"/comments/:id/quote", :method => :get).to(hash.merge(:action => 'quote')).name(:"quote_#{singular}_comment")
       end
     end
 
