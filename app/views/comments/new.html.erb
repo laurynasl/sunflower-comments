@@ -1,4 +1,4 @@
-<%= fixed_form_for(@comment, :action => url(:"sunflower_comments_#{@parent.class.name.underscore}_comments", :parent_id => @parent.id)) do %>
+<%= fixed_form_for(@comment, :action => url(:"sunflower_comments_#{@parent.class.name.snake_case}_comments", :parent_id => @parent.id)) do %>
   <label for="comment_body">Comment:</label>
   <br />
   <%= text_area :body, :style => 'width: 500px; height: 200px;' %>

@@ -62,7 +62,7 @@ if defined?(Merb::Plugins)
       SunflowerComments.classes.each do |klass|
         parent_table = klass.table_name.to_s
         prefix = "/#{parent_table}/:parent_id"
-        singular = klass.name.underscore
+        singular = klass.name.snake_case
         hash = {:controller => 'comments', :parent_table => parent_table}
 
         scope.match(prefix+"/comments", :method => :get).to(hash.merge(:action => 'index')).name(:"#{singular}_comments")
