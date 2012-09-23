@@ -49,8 +49,8 @@ task :gemspec do
   end
 end
 
-require 'spec/rake/spectask'
-require 'merb-core/test/tasks/spectasks'
+#require 'spec/rake/spectask'
+#require 'merb-core/test/tasks/spectasks'
 desc 'Default: run spec examples'
 task :default => 'spec'
 
