@@ -98,7 +98,7 @@ if defined?(Merb::Plugins)
       end
 
       def parent
-        parent_table.camel_case.singular.constantize.filter(:id => parent_id).first
+        Object.const_get(parent_table.camel_case.singular).filter(:id => parent_id).first
       end
     end
     
